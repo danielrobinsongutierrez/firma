@@ -18,13 +18,13 @@
         }
         
         .signature-preview .logo {
-            max-height: 60px;
+            max-height: 45px; /* Reducido para Outlook */
             margin-right: 15px;
             vertical-align: middle;
         }
         
         .signature-preview .name {
-            font-size: 16px;
+            font-size: 16px; /* Reducido para Outlook */
             font-weight: bold;
             color: #1f2937;
         }
@@ -32,16 +32,19 @@
         .signature-preview .position {
             color: #6b7280;
             font-style: italic;
+            font-size: 13px; /* Reducido para Outlook */
         }
         
         .signature-preview .company {
             font-weight: 600;
             color: #374151;
             margin-bottom: 5px;
+            font-size: 12px; /* Reducido para Outlook */
         }
         
         .signature-preview .contact {
             color: #4b5563;
+            font-size: 11px; /* Reducido para Outlook */
         }
         
         .signature-preview .contact a {
@@ -120,10 +123,10 @@
     <div class="max-w-7xl mx-auto p-4">
         <div class="text-center mb-8">
             <h1 class="text-4xl font-bold text-slate-800 mb-2">
-                Generador de Firmas de Correo Interno de la Cooperaitva
+                Generador de Firmas de Correo Interno de la Cooperativa
             </h1>
             <p class="text-slate-600">
-                Creá firmas para tu correo completando con tus datos el siguiente formulario
+                Creá firmas para tu correo electrónico completando el siguiente formulario
             </p>
         </div>
 
@@ -197,7 +200,7 @@
                                     <input
                                         type="text"
                                         id="phone"
-                                        placeholder="+54 0299 123 456"
+                                        placeholder="+54 0299 155 123 456"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
                                 </div>
@@ -249,7 +252,7 @@
                                     <input
                                         type="text"
                                         id="website"
-                                        placeholder="https://www.copelco.coop"
+                                        placeholder="www.copelco.coop"
                                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
                                 </div>
@@ -330,13 +333,13 @@
                 <div class="bg-white rounded-lg shadow-sm p-6">
                     <h3 class="text-lg font-semibold mb-4">Acciones</h3>
                     <p class="text-sm text-gray-600 mb-4">
-                        Descarga la imagen de tu firma
+                        Descarga la imagen de tu firma optimizada para Outlook
                     </p>
                     
                     <div class="space-y-4">
                         <button id="downloadImage" class="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors border-2 border-green-700">
                             <i class="fas fa-download mr-2"></i>
-                            Descargar Imagen de la Firma
+                            Descargar Imagen para Outlook
                         </button>
                         
                         <hr class="my-4">
@@ -347,7 +350,7 @@
                                 <li>• Completa tus datos personales (obligatorios)</li>
                                 <li>• Configura la plantilla de tu empresa</li>
                                 <li>• Sube tu logo o ingresa la URL</li>
-                                <li>• Descarga la imagen de la firma</li>
+                                <li>• Descarga la imagen optimizada para Outlook</li>
                                 <li>• Usa la firma en tu cliente de correo</li>
                             </ul>
                         </div>
@@ -407,6 +410,7 @@
         // Establecer valores por defecto al cargar la página
         function setDefaultValues() {
             companyNameInput.value = 'Coop. Copelco ltda';
+            websiteInput.value = 'www.copelco.coop'; // MODIFICADO: Agregado valor por defecto para sitio web
             logoInput.value = 'https://raw.githubusercontent.com/danielrobinsongutierrez/firma/707ef9244182e80b842e143de3a59b36a90395cd/logo-copelco.svg';
             addressInput.value = 'Av. J. A. Roca 758';
         }
@@ -417,7 +421,7 @@
             if (savedTemplate) {
                 const template = JSON.parse(savedTemplate);
                 companyNameInput.value = template.companyName || 'Coop. Copelco ltda';
-                websiteInput.value = template.website || '';
+                websiteInput.value = template.website || 'www.copelco.coop'; // MODIFICADO: Agregado valor por defecto
                 logoInput.value = template.logo || 'https://raw.githubusercontent.com/danielrobinsongutierrez/firma/707ef9244182e80b842e143de3a59b36a90395cd/logo-copelco.svg';
                 addressInput.value = template.address || 'Av. J. A. Roca 758';
                 
@@ -520,6 +524,12 @@
                 ? `<img src="${logoSrc}" alt="${companyName}" class="logo" crossorigin="anonymous">`
                 : "";
 
+            // MODIFICADO: Asegurar que el sitio web tenga protocolo para el enlace
+            let websiteUrl = website;
+            if (websiteUrl && !websiteUrl.startsWith('http://') && !websiteUrl.startsWith('https://')) {
+                websiteUrl = 'https://' + websiteUrl;
+            }
+
             return `
                 <div class="signature-preview">
                     <div style="display: flex; align-items: center; margin-bottom: 10px;">
@@ -533,7 +543,7 @@
                     <div class="contact">
                         ${phone ? `<div><i class="fas fa-phone"></i> ${phone}</div>` : ""}
                         ${email ? `<div><i class="fas fa-envelope"></i> ${email}</div>` : ""}
-                        ${website ? `<div><i class="fas fa-globe"></i> <a href="${website}">${website}</a></div>` : ""}
+                        ${website ? `<div><i class="fas fa-globe"></i> <a href="${websiteUrl}" target="_blank">${website}</a></div>` : ""}
                         ${address ? `<div><i class="fas fa-map-marker-alt"></i> ${address}</div>` : ""}
                     </div>
                 </div>
@@ -576,17 +586,17 @@
             }
         }
 
-        // Calcular altura dinámica del canvas
+        // Calcular altura dinámica del canvas (optimizado para Outlook)
         function calculateCanvasHeight() {
-            let height = 120; // Altura base para nombre y posición
+            let height = 90; // Altura base reducida para Outlook
             
-            if (companyNameInput.value) height += 25;
-            if (phoneInput.value) height += 20;
-            if (emailInput.value) height += 20;
-            if (websiteInput.value) height += 20;
-            if (addressInput.value) height += 20;
+            if (companyNameInput.value) height += 20; // Empresa
+            if (phoneInput.value) height += 15;       // Teléfono
+            if (emailInput.value) height += 15;       // Email
+            if (websiteInput.value) height += 15;     // Sitio web
+            if (addressInput.value) height += 15;     // Dirección
             
-            return height + 40; // Margen adicional
+            return height + 25; // Margen inferior reducido
         }
 
         // Función para cargar imagen con manejo de CORS mejorado
@@ -689,7 +699,7 @@
             }
         }
 
-        // Descargar imagen de la firma
+        // Descargar imagen de la firma (optimizado para Outlook)
         async function downloadSignatureImage() {
             if (!validateForm()) {
                 return;
@@ -708,58 +718,55 @@
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            // Configurar dimensiones del canvas
-            canvas.width = 600;
-            canvas.height = calculateCanvasHeight();
+            // Configurar dimensiones del canvas optimizadas para Outlook
+            canvas.width = 500;  // Ancho reducido para Outlook
+            canvas.height = calculateCanvasHeight(); // Altura optimizada
             
             // Fondo blanco
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Configurar fuente
-            ctx.fillStyle = '#333333';
-            ctx.font = '16px Arial';
-            
-            let yOffset = 30;
+            let yOffset = 25;  // Margen superior reducido
             
             // Función para dibujar el resto de la firma
             function drawRestOfSignature() {
-                // Dibujar línea separadora
+                // Dibujar línea separadora más delgada
                 ctx.strokeStyle = '#e5e7eb';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 1;
                 ctx.beginPath();
                 ctx.moveTo(20, yOffset);
                 ctx.lineTo(canvas.width - 20, yOffset);
                 ctx.stroke();
                 
-                yOffset += 25;
+                yOffset += 15;  // Espacio compacto
                 
                 // Dibujar nombre de la empresa
                 if (companyName) {
                     ctx.fillStyle = '#374151';
-                    ctx.font = 'bold 14px Arial';
+                    ctx.font = 'bold 12px Arial'; // Fuente reducida
                     ctx.fillText(companyName, 20, yOffset);
-                    yOffset += 25;
+                    yOffset += 18;
                 }
                 
                 // Dibujar información de contacto
                 ctx.fillStyle = '#4b5563';
-                ctx.font = '12px Arial';
+                ctx.font = '11px Arial'; // Fuente reducida
                 
                 if (phone) {
                     ctx.fillText('📞 ' + phone, 20, yOffset);
-                    yOffset += 20;
+                    yOffset += 12;
                 }
                 
                 if (email) {
                     ctx.fillText('✉️ ' + email, 20, yOffset);
-                    yOffset += 20;
+                    yOffset += 12;
                 }
                 
                 if (website) {
+                    // MODIFICADO: Asegurar que el sitio web se muestre correctamente en la imagen
                     ctx.fillStyle = '#3b82f6';
                     ctx.fillText('🌐 ' + website, 20, yOffset);
-                    yOffset += 20;
+                    yOffset += 12;
                     ctx.fillStyle = '#4b5563';
                 }
                 
@@ -779,24 +786,24 @@
                 try {
                     const img = await loadImageWithCORS(logoSrc);
                     
-                    // Dibujar logo con tamaño máximo de 60px de altura
-                    const logoHeight = 60;
+                    // Dibujar logo con tamaño optimizado para Outlook
+                    const logoHeight = 45; // Reducido para Outlook
                     const logoWidth = (img.width * logoHeight) / img.height;
                     
                     // Verificar que la imagen se haya cargado correctamente
                     if (img.width > 0 && img.height > 0) {
-                        ctx.drawImage(img, 20, yOffset - 10, logoWidth, logoHeight);
+                        ctx.drawImage(img, 20, yOffset - 5, logoWidth, logoHeight);
                         
                         // Dibujar nombre y posición al lado del logo
                         ctx.fillStyle = '#1f2937';
-                        ctx.font = 'bold 18px Arial';
-                        ctx.fillText(fullName, logoWidth + 50, yOffset + 10);
+                        ctx.font = 'bold 16px Arial'; // Fuente reducida
+                        ctx.fillText(fullName, logoWidth + 40, yOffset + 12);
                         
                         ctx.fillStyle = '#6b7280';
-                        ctx.font = 'italic 14px Arial';
-                        ctx.fillText(position, logoWidth + 50, yOffset + 35);
+                        ctx.font = 'italic 13px Arial'; // Fuente reducida
+                        ctx.fillText(position, logoWidth + 40, yOffset + 30);
                         
-                        yOffset += 60;
+                        yOffset += 45; // Espacio compacto
                     } else {
                         throw new Error('La imagen no se cargó correctamente');
                     }
@@ -815,14 +822,14 @@
             function drawSignatureWithoutLogo() {
                 // Dibujar nombre y posición
                 ctx.fillStyle = '#1f2937';
-                ctx.font = 'bold 18px Arial';
-                ctx.fillText(fullName, 20, yOffset + 10);
+                ctx.font = 'bold 16px Arial'; // Fuente reducida
+                ctx.fillText(fullName, 20, yOffset + 12);
                 
                 ctx.fillStyle = '#6b7280';
-                ctx.font = 'italic 14px Arial';
-                ctx.fillText(position, 20, yOffset + 35);
+                ctx.font = 'italic 13px Arial'; // Fuente reducida
+                ctx.fillText(position, 20, yOffset + 30);
                 
-                yOffset += 60;
+                yOffset += 45; // Espacio compacto
                 drawRestOfSignature();
             }
             
@@ -831,13 +838,13 @@
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = 'firma-correo.png';
+                    a.download = 'firma-outlook.png'; // Nombre de archivo específico
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                     
-                    showToast('¡Descargado!', 'La imagen de la firma ha sido descargada.', 'success');
+                    showToast('¡Descargado!', 'Firma optimizada para Outlook', 'success');
                 }, 'image/png');
             }
         }
@@ -896,6 +903,4 @@
         });
     </script>
 </body>
-
 </html>
-
